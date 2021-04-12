@@ -1,0 +1,37 @@
+<ng-container *ngIf="!dataLoading && !weatherResults">
+	<header>
+		<h1>Please click the button to begin.</h1>
+	</header>
+	<section>
+		<div class="box">
+			<button (click)="getWeatherResults()">Get Weather Results</button>
+		</div>
+		</section>
+</ng-container>
+<section>
+	<ng-container *ngIf="dataLoading">
+		<p class="loading">Loading...</p>
+		<mat-spinner></mat-spinner>
+	</ng-container>
+	<ng-container *ngIf="!dataLoading && weatherResults">
+		<div class="results {{!isDesktopLayout ? 'mobile' : null}}">
+			<button class="small" (click)="reset()">Reset</button>
+			<ng-container *ngIf="isDesktopLayout; else mobileLayout">
+				<h2>The weather reading for your location is: ({{weatherResults.name}}, {{weatherResults.sys.country}})</h2>
+			</ng-container>
+			<ng-template #mobileLayout>
+				<h2>{{weatherResults.name}}'s weather is:</h2>
+			</ng-template>
+			<p>Temperature: <span>{{weatherResults.main.temp}}&deg;C</span></p>
+			<p>Feels like: <span>{{weatherResults.main.feels_like}}&deg;C</span></p>
+			<p>Humidity: <span>{{weatherResults.main.humidity}}%</span></p>
+			<p>Wind speed: <span>{{weatherResults.wind.speed}} m/h</span></p>
+			<p>Wind deg: <span>{{weatherResults.wind.deg}}&deg;</span></p>
+			<p>Wind gust: <span>{{weatherResults.wind.gust}} m/h</span></p>
+		</div>
+	</ng-container>
+
+	<ng-container *ngIf="!dataLoading && errorMessage.length > 0">
+		<p class="error">{{errorMessage}}</p>
+	</ng-container>
+</section>
